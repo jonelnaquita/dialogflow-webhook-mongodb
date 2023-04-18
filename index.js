@@ -21,7 +21,8 @@ mongoose.connect('mongodb+srv://jonelnaquita12:Jhownie122514@dialogflow-mongodb.
 const conversationSchema = new mongoose.Schema({
   queryText: String,
   fulfillmentText: String,
-  action: String
+  action: String,
+  intentName: String
 });
 
 // Create a new model using the schema
@@ -32,9 +33,10 @@ app.post('/webhook', (req, res) => {
   const queryText = req.body.queryResult.queryText;
   const fulfillmentText = req.body.queryResult.fulfillmentText;
   const action = req.body.queryResult.action;
+  const intentName = req.body.queryResult.intent.displayName;
 
   // Create a new conversation document and save it to the database
-  const conversation = new Conversation({ queryText, fulfillmentText, action});
+  const conversation = new Conversation({ queryText, fulfillmentText, action, intentName});
   conversation.save()
     .then(() => console.log('Conversation saved to database'))
     .catch(err => console.log(err));
